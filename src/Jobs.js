@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 const getPostIDs = async () => {
-  console.log('ok')
   const response = await fetch("https://hacker-news.firebaseio.com/v0/jobstories.json");
   const IDs = response.json();
   return IDs;
@@ -24,30 +23,51 @@ const fetchPosts = async (IDs) => {
 
 const Jobs = () => {
 
-  const [ids, setIDs] = useState('');
+  const [ids, setIDs] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [postIndex, setpostIndex] = useState(0);
+
+  //index to set to nine on useEffect and then bump with eah load more
 
   useEffect(() => {
     const getPosts = async () => {
       const IDs = await getPostIDs();
-      setIDs(ids);
+      setIDs(IDs);
       const showIDs = IDs.slice(0, 9);
 
       const showPosts = await fetchPosts(showIDs);
-      console.log(showPosts)
+      setpostIndex(9);
       setPosts(showPosts);
     }
 
     getPosts();
   }, []);
 
+  const loadMore = async () => {
+    const newIndex = postIndex + 9
+    const newPosts = await fetchPosts(ids.slice(postIndex, newIndex))
+    setPosts(posts.concat(newPosts))
+    setpostIndex(newIndex)
+  }
+
+  const toDate = (timestamp) => {
+    return new Date(timestamp).toLocaleDateString("en-US")
+  }
+
   return (
     <div>
       <h1>Hacker News Jobs</h1>
-      {posts.map(({ by, title}) => (
-        <p key={by}>Coffee type {by} in a {title} size.</p>
-      ))}
+      <div className="container">
+        {posts.map(({ by, title, time }) => (
+          <div>
+            <p key={by}>Job by: {by} Job title: {title} {time}</p>
+            <p>{new Date(time * 1000).toLocaleDateString("en-US")}</p>
+          </div>
+        ))}
+      </div>
+      <button onClick={loadMore}>Load more</button>
     </div>
+
   )
 }
 
