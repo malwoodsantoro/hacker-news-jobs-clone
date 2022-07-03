@@ -58,14 +58,17 @@ const Jobs = () => {
     <div>
       <h1>Hacker News Jobs</h1>
       <div className="container">
-        {posts.map(({ by, title, time }) => (
-          <div>
-            <p key={by}>Job by: {by} Job title: {title} {time}</p>
-            <p>{new Date(time * 1000).toLocaleDateString("en-US")}</p>
-          </div>
+        {posts.map(({ by, title, time, url, id }) => (
+          <a className="fillDiv" href={url ? url : `https://news.ycombinator.com/item?id=${id}`}>
+            <div className="post">
+              <h2>{title.split(')')[0] + ')'}</h2>
+              <p>{title.split(')')[1]}</p>
+              <p>{new Date(time * 1000).toLocaleDateString("en-US")}</p>
+            </div>
+          </a>
         ))}
       </div>
-      <button onClick={loadMore}>Load more</button>
+      <button className="load" onClick={loadMore}>Load more</button>
     </div>
 
   )

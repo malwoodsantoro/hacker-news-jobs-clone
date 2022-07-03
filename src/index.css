@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 20px;
+  background-color: cornsilk;
 }
 
 code {
@@ -15,5 +17,28 @@ code {
 .container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
   grid-gap: 1rem;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color:black;
+  outline: solid black;
+  cursor:pointer;
+  text-decoration: none !important;
+  height: 100%;
+}
+
+.load {
+  margin-top: 50px;
+}
+
+.fillDiv {
+  display: block;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
 }
